@@ -1,12 +1,11 @@
 import React from "react";
-import "./App.css";
+import "./card-columns.styles.css";
 import { observer } from "mobx-react";
-import CardColumn from "../components/card-column";
-import CreateCard from "../components/create-card";
-import { connectToKanbanDB } from "./utils/kanban.utils";
+// import CardColumn from "../components/card-column";
+// import CreateCard from "../components/create-card";
 import { DragDropContext } from "react-beautiful-dnd";
-import SectionListStore from ".,/../store";
-import SectionListReactions from "../../store/SectionListReactions";
+import Store from "../../store";
+import Reactions from "../../store/Reaction";
 
 interface Props {}
 
@@ -14,21 +13,7 @@ class CardColumns extends React.Component<Props> {
   store = new Store();
 
   render() {
-    return (
-      <>
-        <EXOHeader
-          crumbs={this.store.crumbs}
-          company={this.props.initialAttributes.company}
-          user={this.props.initialAttributes.user}
-        />
-        <ErrorMessage errorMessage={this.store.errorMessage} />
-        <Content
-          sectionsListResource={this.store.sectionsListResource}
-          store={this.store}
-        />
-        <SectionListReactions store={this.store} fireImmediately={true} />
-      </>
-    );
+    return <>hello</>;
   }
 }
 

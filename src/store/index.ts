@@ -1,6 +1,14 @@
 import { action, computed, observable } from "mobx";
 import { just, Maybe, nothing } from "maybeasy";
-import { error, loading, ready, State, waiting } from "./Types";
+import {
+  error,
+  loading,
+  ready,
+  State,
+  waiting,
+  Card,
+  CardArrayResource,
+} from "./Types";
 
 export const assertNever = (x: never) => {
   throw new Error(`Unexpected object: ${x}`);
@@ -14,6 +22,7 @@ class Store {
   load = () => {
     switch (this.state.kind) {
       case "waiting":
+        this.state = loading(this.state);
       case "ready":
       case "loading":
       case "error":
@@ -24,12 +33,13 @@ class Store {
   };
 
   @action
-  ready = (sectionsListResource: SectionsListResource) => {
+  ready = (cards: CardArrayResource) => {
     switch (this.state.kind) {
       case "ready":
       case "error":
       case "waiting":
       case "loading":
+        console.log(cards);
         break;
       default:
         assertNever(this.state);

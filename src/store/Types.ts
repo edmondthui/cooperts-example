@@ -1,4 +1,20 @@
-// ADD CARD TYPES
+// import { Resource } from "cooper-ts";
+import { Resource } from "../exo_modules/Resource/Types/index";
+
+export interface Card {
+  // id: string; // maybe not needed
+  name?: string | undefined;
+  description?: string | undefined;
+  status?: CardType | undefined;
+  created?: string | undefined; // UNIX timestamp
+  lastUpdated?: string | undefined; // UNIX timestamp
+}
+
+export type CardResource = Resource<Card>;
+
+export type CardArrayResource = Resource<Card[]>;
+
+export type CardType = "TODO" | "DOING" | "DONE" | "IN_PROGRESS";
 
 export const waiting = (): Waiting => ({
   kind: "waiting",
@@ -13,14 +29,14 @@ export const loading = (state: Waiting | Ready | Loading): Loading => {
 };
 
 export const ready = (
-  sectionsListResource: SectionsListResource,
-  state: Loading | Sorting | Waiting
+  // sectionsListResource: SectionsListResource,
+  state: Loading | Waiting
 ): Ready => {
   const { kind, ...previous } = state;
   return {
     kind: "ready",
     ...previous,
-    sectionsListResource: sectionsListResource,
+    // sectionsListResource: sectionsListResource,
   };
 };
 
@@ -39,8 +55,7 @@ export interface Loading {
 
 interface Ready {
   kind: "ready";
-  sectionsListResource: SectionsListResource;
-  page: number;
+  // sectionsListResource: SectionsListResource;
 }
 
 interface Error {

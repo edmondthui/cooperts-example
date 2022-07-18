@@ -1,23 +1,25 @@
 // import { Resource } from "cooper-ts";
-import { Resource } from "../exo_modules/Resource/Types/index";
+// import { Resource } from "../exo_modules/Resource/Types/index";
 
-export interface Card {
-  // id: string; // maybe not needed
-  name?: string | undefined;
-  description?: string | undefined;
-  status?: CardType | undefined;
-  created?: string | undefined; // UNIX timestamp
-  lastUpdated?: string | undefined; // UNIX timestamp
-}
+// export interface Card {
+//   id: string; // maybe not needed
+//   name: string;
+//   description: string;
+//   status: CardType;
+//   created: Date; // UNIX timestamp
+//   lastUpdated: Date; // UNIX timestamp
+// }
 
-export type CardResource = Resource<Card>;
+// export type CardResource = Resource<Card>;
 
-export type CardArrayResource = Resource<Card[]>;
+// export type CardArrayResource = Resource<Card[]>;
 
-export type CardType = "TODO" | "DOING" | "DONE" | "IN_PROGRESS";
+// export type CardType = "TODO" | "DOING" | "DONE" | "IN_PROGRESS";
 
 export const waiting = (): Waiting => ({
   kind: "waiting",
+  cards: [],
+  db: undefined,
 });
 
 export const loading = (state: Waiting | Ready | Loading): Loading => {
@@ -25,18 +27,16 @@ export const loading = (state: Waiting | Ready | Loading): Loading => {
   return {
     kind: "loading",
     ...previous,
+    createString: "",
+    open: false,
   };
 };
 
-export const ready = (
-  // sectionsListResource: SectionsListResource,
-  state: Loading | Waiting
-): Ready => {
+export const ready = (state: Loading | Ready): Ready => {
   const { kind, ...previous } = state;
   return {
     kind: "ready",
     ...previous,
-    // sectionsListResource: sectionsListResource,
   };
 };
 
@@ -47,15 +47,24 @@ export const error = (message: string): Error => ({
 
 interface Waiting {
   kind: "waiting";
+  cards: any;
+  db: any;
 }
 
 export interface Loading {
   kind: "loading";
+  createString: string;
+  cards: any;
+  db: any;
+  open: boolean;
 }
 
 interface Ready {
   kind: "ready";
-  // sectionsListResource: SectionsListResource;
+  cards: any;
+  db: any;
+  createString: string;
+  open: boolean;
 }
 
 interface Error {

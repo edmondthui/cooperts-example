@@ -1,21 +1,66 @@
 import React from "react";
 import "./card-columns.styles.css";
 import { observer } from "mobx-react";
+import { Maybe } from "maybeasy";
 // import CardColumn from "../components/card-column";
-// import CreateCard from "../components/create-card";
+import CreateCard from "../create-card/index";
 import { DragDropContext } from "react-beautiful-dnd";
 import Store from "../../store";
-import Reactions from "../../store/Reaction";
 
-interface Props {}
-
-class CardColumns extends React.Component<Props> {
-  store = new Store();
-
-  render() {
-    return <>hello</>;
-  }
+interface Props {
+  cards: Maybe<any[]>;
+  store: Store;
+  createString: Maybe<string>;
 }
+
+const onDragEnd = (result: any) => {
+  const { destination, source } = result;
+  if (!destination) {
+    return;
+  }
+  if (
+    destination.droppableId === source.droppableId &&
+    destination.index === source.index
+  ) {
+    return;
+  }
+};
+
+const CardColumns: React.FC<Props> = ({ cards, store, createString }) => {
+  return (
+    <div className="App">
+      <div className="columns-container">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className="column-container">
+            <h1 className="column-title">To-do</h1>
+            {/* <CardColumn
+              cards={TODO}
+              status="TODO"
+              updateCards={this.updateCards}
+            /> */}
+          </div>
+          <div className="column-container">
+            <h1 className="column-title">In Progress</h1>
+            {/* <CardColumn
+              cards={IN_PROGRESS}
+              status="IN_PROGRESS"
+              updateCards={this.updateCards}
+            /> */}
+          </div>
+          <div className="column-container">
+            <h1 className="column-title">Done</h1>
+            {/* <CardColumn
+              cards={DONE}
+              status="DONE"
+              updateCards={this.updateCards}
+            /> */}
+          </div>
+          <CreateCard store={store} createString={createString} />
+        </DragDropContext>
+      </div>
+    </div>
+  );
+};
 
 export default observer(CardColumns);
 
@@ -64,18 +109,6 @@ export default observer(CardColumns);
 //       });
 //   });
 // };
-
-// onDragEnd = (result) => {
-//   const { destination, source } = result;
-//   if (!destination) {
-//     return;
-//   }
-//   if (
-//     destination.droppableId === source.droppableId &&
-//     destination.index === source.index
-//   ) {
-//     return;
-//   }
 
 //   const column = source.droppableId;
 //   const newCards = Array.from(this.state[column]);

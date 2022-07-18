@@ -2,8 +2,10 @@ import { Maybe } from "maybeasy";
 import { observer } from "mobx-react";
 import React from "react";
 import Modal from "react-modal";
+import Task from "taskarian";
 import Store from "../../store";
 import "./create-card.styles.css";
+import { getCards } from "../../utils/kanban.utils";
 
 interface Props {
   store: Store;
@@ -42,18 +44,45 @@ const closeModal = (store: Store) => (e: any) => {
   store.toggleModal(false);
 };
 
+const handleSubmit =
+  (store: Store) => (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let card = {
+      name: store.createString.getOrElseValue(""),
+      description: store.createString.getOrElseValue(""),
+      status: store.status,
+    };
+    if (card.status.length > 0) {
+      Task.fromPromise(() => store.db.addCard(card)).fork(
+        (err) => console.log(err),
+        (success) => {
+          store.addCard(card);
+        }
+      );
+    } else {
+      console.log("status required!");
+      // store.error({ message: "Card status required!" });
+    }
+  };
+
+const statusHandler =
+  (store: Store) => (e: React.ChangeEvent<HTMLSelectElement>) => {
+    store.setStatus(e.target.value);
+  };
+
 class CreateCard extends React.Component<Props> {
   render() {
+    const store = this.props.store;
     return (
       <div className="create-card">
         <Modal
-          isOpen={this.props.store.modalOpen}
-          onRequestClose={closeModal(this.props.store)}
+          isOpen={store.modalOpen}
+          onRequestClose={closeModal(store)}
           style={customStyles}
           contentLabel="Create Card Modal"
         >
-          <form onSubmit={() => {}} className="modal-form">
-            <select onChange={() => {}} value={""}>
+          <form onSubmit={handleSubmit(store)} className="modal-form">
+            <select onChange={statusHandler(store)} value={store.status}>
               <option value="" disabled>
                 SELECT STATUS
               </option>
@@ -65,14 +94,11 @@ class CreateCard extends React.Component<Props> {
           </form>
         </Modal>
         <form
-          onSubmit={openModal(
-            this.props.store,
-            this.props.createString.getOrElseValue("")
-          )}
+          onSubmit={openModal(store, store.createString.getOrElseValue(""))}
           className="create-card-form"
         >
           <input
-            onChange={onStringChange(this.props.store)}
+            onChange={onStringChange(store)}
             value={this.props.createString.getOrElseValue("")}
             placeholder="e.g. Bug: TextPoll not dispatching half stars"
             maxLength={500}
@@ -90,16 +116,6 @@ export default observer(CreateCard);
 //     const [modalIsOpen, setIsOpen] = useState(false);
 //     const [create, setCreateField] = useState("");
 //     const [status, setStatus] = useState("");
-
-// const onStringChange = (field) => {
-//     return (e) => {
-//         setCreateField(e.currentTarget.value);
-//     };
-// };
-
-//     const statusHandler = (e) => {
-//         setStatus(e.currentTarget.value);
-//     };
 
 //     const handleSubmit = (e) => {
 //         e.preventDefault();

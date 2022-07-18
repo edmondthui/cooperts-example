@@ -33,6 +33,9 @@ class Store {
       case "waiting":
         break;
       case "loading":
+        console.log(data);
+        this.state.db = data.db;
+        this.state.cards = data.cards;
         this.state = ready(this.state);
         break;
       default:
@@ -79,6 +82,38 @@ class Store {
     }
   };
 
+  @action
+  setStatus = (status: string) => {
+    switch (this.state.kind) {
+      case "ready":
+        this.state.status = status;
+        break;
+      case "error":
+      case "waiting":
+      case "loading":
+        break;
+      default:
+        assertNever(this.state);
+    }
+  };
+
+  @action
+  addCard = (card: any) => {
+    switch (this.state.kind) {
+      case "ready":
+        this.state.cards = [...this.state.cards, card].flat();
+        this.state.open = false;
+        this.state.createString = "";
+        break;
+      case "error":
+      case "waiting":
+      case "loading":
+        break;
+      default:
+        assertNever(this.state);
+    }
+  };
+
   @computed
   get createString(): Maybe<string> {
     switch (this.state.kind) {
@@ -89,6 +124,19 @@ class Store {
       case "error":
       default:
         return nothing();
+    }
+  }
+
+  @computed
+  get status(): string {
+    switch (this.state.kind) {
+      case "ready":
+      case "loading":
+        return this.state.status;
+      case "waiting":
+      case "error":
+      default:
+        return "";
     }
   }
 
@@ -128,6 +176,19 @@ class Store {
       case "waiting":
       default:
         return nothing();
+    }
+  }
+
+  @computed
+  get db(): any {
+    switch (this.state.kind) {
+      case "ready":
+        return this.state.db;
+      case "loading":
+      case "waiting":
+      case "error":
+      default:
+        return false;
     }
   }
 }

@@ -1,25 +1,17 @@
 import { observer } from "mobx-react";
 import Task from "taskarian";
-import { connectToKanbanDB } from "../utils/kanban.utils";
+import { connectToKanbanDB, getCards } from "../utils/kanban.utils";
 import Store, { assertNever } from "./index";
 import ReactionComponent, { RCProps } from "./ReactionComponent";
 import { State } from "./Types";
 // import { cardArrayResourceDecoder } from "./Decoders";
-import { noop } from "@kofno/piper";
 
 interface Props extends RCProps<Store> {
   store: Store;
 }
 
-const getCards = (db: any) => {
-  return new Task((reject, resolve) => {
-    db.getCards()
-      .then((cards: any) => {
-        resolve({ cards: cards, db: db });
-      })
-      .catch((error: any) => reject(db));
-    return noop;
-  });
+const loadDB = () => {
+  return Task.fromPromise(connectToKanbanDB);
 };
 
 class Reactions extends ReactionComponent<Store, State, Props> {
@@ -31,15 +23,15 @@ class Reactions extends ReactionComponent<Store, State, Props> {
         store.load();
         break;
       case "loading":
-        Task.fromPromise(connectToKanbanDB)
+        Task.succeed<any, {}>({})
+          .assign("db", loadDB)
+          .do(({ db }) => store.ready({ db: db, cards: [] }))
           .andThen(getCards)
+          .do((cards) => store.addCard(cards))
           .fork(
-            (db) => store.ready({ cards: [], db: db }),
-            (result) => {
-              store.ready(result);
-            }
+            (err) => console.log(err),
+            (success) => console.log(success)
           );
-        store.ready({ cards: [], db: undefined });
         break;
       case "ready":
       case "error":

@@ -18,8 +18,6 @@
 
 export const waiting = (): Waiting => ({
   kind: "waiting",
-  cards: [],
-  db: undefined,
 });
 
 export const loading = (state: Waiting | Ready | Loading): Loading => {
@@ -29,6 +27,9 @@ export const loading = (state: Waiting | Ready | Loading): Loading => {
     ...previous,
     createString: "",
     open: false,
+    status: "",
+    cards: [],
+    db: undefined,
   };
 };
 
@@ -47,8 +48,6 @@ export const error = (message: string): Error => ({
 
 interface Waiting {
   kind: "waiting";
-  cards: any;
-  db: any;
 }
 
 export interface Loading {
@@ -57,6 +56,7 @@ export interface Loading {
   cards: any;
   db: any;
   open: boolean;
+  status: string;
 }
 
 interface Ready {
@@ -65,6 +65,7 @@ interface Ready {
   db: any;
   createString: string;
   open: boolean;
+  status: string;
 }
 
 interface Error {

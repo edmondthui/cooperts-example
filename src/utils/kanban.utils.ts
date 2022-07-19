@@ -1,9 +1,8 @@
 import KanbanDB from "kanbandb";
 import Task from "taskarian";
 
-export const connectToKanbanDB = async () => {
-  const db = await KanbanDB.connect("testDB");
-  return db;
+export const connectToKanbanDB = () => {
+  return Task.fromPromise(() => KanbanDB.connect("testDB"));
 };
 
 export const getCards = (obj: any) => {

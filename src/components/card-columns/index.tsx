@@ -6,7 +6,6 @@ import CardColumn from "../card-column";
 import CreateCard from "../create-card";
 import { DragDropContext } from "react-beautiful-dnd";
 import Store from "../../store";
-import { noop } from "mobx/lib/internal";
 import Task from "taskarian";
 
 interface Props {

@@ -4,15 +4,16 @@ import { connectToKanbanDB, getCards } from "../utils/kanban.utils";
 import Store, { assertNever } from "./index";
 import ReactionComponent, { RCProps } from "./ReactionComponent";
 import { State } from "./Types";
-// import { cardArrayResourceDecoder } from "./Decoders";
+import { cardArrayDecoder, fromDecoderAny } from "./Decoders";
 
 interface Props extends RCProps<Store> {
   store: Store;
 }
 
-const loadDB = () => {
-  return Task.fromPromise(connectToKanbanDB);
-};
+const decodeCards = (cards: any) =>
+  fromDecoderAny(cardArrayDecoder)(cards).mapError((e) => ({
+    err: `decoder error ${e}`,
+  }));
 
 class Reactions extends ReactionComponent<Store, State, Props> {
   tester = () => this.props.store.state;
@@ -24,9 +25,10 @@ class Reactions extends ReactionComponent<Store, State, Props> {
         break;
       case "loading":
         Task.succeed<any, {}>({})
-          .assign("db", loadDB)
+          .assign("db", connectToKanbanDB)
           .do(({ db }) => store.ready({ db: db }))
           .andThen(getCards)
+          .andThen(decodeCards)
           .do((cards) => store.setCards(cards))
           .fork(
             (err) => console.log(err),

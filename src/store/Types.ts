@@ -5,13 +5,11 @@ export interface Card {
   name: string;
   description: string;
   status: CardType;
-  created: Date; // UNIX timestamp
-  lastUpdated: Date; // UNIX timestamp
+  created: number; // UNIX timestamp
+  lastUpdated: number; // UNIX timestamp
 }
 
 export type CardResource = Resource<Card>;
-
-export type CardArrayResource = Resource<Card[]>;
 
 export type CardType = "TODO" | "DONE" | "IN_PROGRESS";
 

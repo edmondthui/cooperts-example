@@ -1,20 +1,19 @@
-// import { Resource } from "cooper-ts";
-// import { Resource } from "../exo_modules/Resource/Types/index";
+import { Resource } from "../exo_modules/Resource/Types/index";
 
-// export interface Card {
-//   id: string; // maybe not needed
-//   name: string;
-//   description: string;
-//   status: CardType;
-//   created: Date; // UNIX timestamp
-//   lastUpdated: Date; // UNIX timestamp
-// }
+export interface Card {
+  id: string;
+  name: string;
+  description: string;
+  status: CardType;
+  created: Date; // UNIX timestamp
+  lastUpdated: Date; // UNIX timestamp
+}
 
-// export type CardResource = Resource<Card>;
+export type CardResource = Resource<Card>;
 
-// export type CardArrayResource = Resource<Card[]>;
+export type CardArrayResource = Resource<Card[]>;
 
-// export type CardType = "TODO" | "DOING" | "DONE" | "IN_PROGRESS";
+export type CardType = "TODO" | "DONE" | "IN_PROGRESS";
 
 export const waiting = (): Waiting => ({
   kind: "waiting",

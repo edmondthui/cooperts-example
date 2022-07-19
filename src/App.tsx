@@ -16,7 +16,6 @@ class App extends React.Component<Props> {
     return (
       <>
         <CardColumns
-          cards={this.store.cards}
           store={this.store}
           createString={this.store.createString}
         />

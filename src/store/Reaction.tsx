@@ -25,9 +25,9 @@ class Reactions extends ReactionComponent<Store, State, Props> {
       case "loading":
         Task.succeed<any, {}>({})
           .assign("db", loadDB)
-          .do(({ db }) => store.ready({ db: db, cards: [] }))
+          .do(({ db }) => store.ready({ db: db }))
           .andThen(getCards)
-          .do((cards) => store.addCard(cards))
+          .do((cards) => store.setCards(cards))
           .fork(
             (err) => console.log(err),
             (success) => console.log(success)

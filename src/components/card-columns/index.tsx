@@ -2,18 +2,30 @@ import React from "react";
 import "./card-columns.styles.css";
 import { observer } from "mobx-react";
 import { Maybe } from "maybeasy";
-// import CardColumn from "../components/card-column";
-import CreateCard from "../create-card/index";
+import CardColumn from "../card-column";
+import CreateCard from "../create-card";
 import { DragDropContext } from "react-beautiful-dnd";
 import Store from "../../store";
 
 interface Props {
-  cards: Maybe<any[]>;
   store: Store;
   createString: Maybe<string>;
 }
 
-const onDragEnd = (result: any) => {
+// const onDragEnd = (result: any) => {
+//   const { destination, source } = result;
+//   if (!destination) {
+//     return;
+//   }
+//   if (
+//     destination.droppableId === source.droppableId &&
+//     destination.index === source.index
+//   ) {
+//     return;
+//   }
+// };
+
+const onDragEnd = (store: Store) => (result: any) => {
   const { destination, source } = result;
   if (!destination) {
     return;
@@ -24,36 +36,55 @@ const onDragEnd = (result: any) => {
   ) {
     return;
   }
+
+  const column = source.droppableId;
+  console.log(store);
+  console.log(result);
+  // const newCards = Array.from(this.state[column]);
+
+  if (destination.droppableId === source.droppableId) {
+    // const card = newCards.splice(source.index, 1);
+    // // Database does not keep track of index so it just updates this on the front end
+    // newCards.splice(destination.index, 0, ...card);
+    // this.setState(() => {
+    //   return { [destination.droppableId]: newCards };
+    // });
+  }
+
+  if (destination.droppableId !== source.droppableId) {
+    // const card = newCards[source.index];
+    // card.status = destination.droppableId;
+    // newCards.splice(source.index, 1);
+    // const destinationCards = Array.from(this.state[destination.droppableId]);
+    // destinationCards.splice(destination.index, 0, card);
+    // this.setState(() => {
+    //   return {
+    //     [destination.droppableId]: destinationCards,
+    //     [source.droppableId]: newCards,
+    //   };
+    // });
+    // connectToKanbanDB().then((db, dbInstanceId) => {
+    //   db.updateCardById(card.id, { status: destination.droppableId });
+    // });
+  }
 };
 
-const CardColumns: React.FC<Props> = ({ cards, store, createString }) => {
+const CardColumns: React.FC<Props> = ({ store, createString }) => {
   return (
     <div className="App">
       <div className="columns-container">
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext onDragEnd={onDragEnd(store)}>
           <div className="column-container">
             <h1 className="column-title">To-do</h1>
-            {/* <CardColumn
-              cards={TODO}
-              status="TODO"
-              updateCards={this.updateCards}
-            /> */}
+            <CardColumn cards={store.todo} status="TODO" />
           </div>
           <div className="column-container">
             <h1 className="column-title">In Progress</h1>
-            {/* <CardColumn
-              cards={IN_PROGRESS}
-              status="IN_PROGRESS"
-              updateCards={this.updateCards}
-            /> */}
+            <CardColumn cards={store.inProgress} status="IN_PROGRESS" />
           </div>
           <div className="column-container">
             <h1 className="column-title">Done</h1>
-            {/* <CardColumn
-              cards={DONE}
-              status="DONE"
-              updateCards={this.updateCards}
-            /> */}
+            <CardColumn cards={store.done} status="DONE" />
           </div>
           <CreateCard store={store} createString={createString} />
         </DragDropContext>

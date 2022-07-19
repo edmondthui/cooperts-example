@@ -35,7 +35,6 @@ class Store {
       case "loading":
         console.log(data);
         this.state.db = data.db;
-        this.state.cards = data.cards;
         this.state = ready(this.state);
         break;
       default:
@@ -101,7 +100,38 @@ class Store {
   addCard = (card: any) => {
     switch (this.state.kind) {
       case "ready":
-        this.state.cards = [...this.state.cards, card].flat();
+        switch (card.status) {
+          case "TODO":
+            this.state.todo = [...this.state.todo, card].flat();
+            break;
+          case "IN_PROGRESS":
+            this.state.inProgress = [...this.state.inProgress, card].flat();
+            break;
+          case "DONE":
+            this.state.done = [...this.state.done, card].flat();
+            break;
+        }
+        this.state.open = false;
+        this.state.createString = "";
+        break;
+      case "error":
+      case "waiting":
+      case "loading":
+        break;
+      default:
+        assertNever(this.state);
+    }
+  };
+
+  @action
+  setCards = (cards: any) => {
+    switch (this.state.kind) {
+      case "ready":
+        this.state.todo = cards.filter((card: any) => card.status === "TODO");
+        this.state.inProgress = cards.filter(
+          (card: any) => card.status === "IN_PROGRESS"
+        );
+        this.state.done = cards.filter((card: any) => card.status === "DONE");
         this.state.open = false;
         this.state.createString = "";
         break;
@@ -167,15 +197,42 @@ class Store {
   }
 
   @computed
-  get cards(): Maybe<any[]> {
+  get todo(): Array<any> {
     switch (this.state.kind) {
       case "ready":
-        return just(this.state.cards);
+        console.log(this.state.todo);
+        return this.state.todo;
       case "error":
       case "loading":
       case "waiting":
       default:
-        return nothing();
+        return [];
+    }
+  }
+
+  @computed
+  get inProgress(): Array<any> {
+    switch (this.state.kind) {
+      case "ready":
+        return this.state.inProgress;
+      case "error":
+      case "loading":
+      case "waiting":
+      default:
+        return [];
+    }
+  }
+
+  @computed
+  get done(): Array<any> {
+    switch (this.state.kind) {
+      case "ready":
+        return this.state.done;
+      case "error":
+      case "loading":
+      case "waiting":
+      default:
+        return [];
     }
   }
 

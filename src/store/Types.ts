@@ -28,7 +28,9 @@ export const loading = (state: Waiting | Ready | Loading): Loading => {
     createString: "",
     open: false,
     status: "",
-    cards: [],
+    todo: [],
+    inProgress: [],
+    done: [],
     db: undefined,
   };
 };
@@ -53,7 +55,9 @@ interface Waiting {
 export interface Loading {
   kind: "loading";
   createString: string;
-  cards: any;
+  todo: Array<any>;
+  inProgress: Array<any>;
+  done: Array<any>;
   db: any;
   open: boolean;
   status: string;
@@ -61,7 +65,9 @@ export interface Loading {
 
 interface Ready {
   kind: "ready";
-  cards: any;
+  todo: Array<any>;
+  inProgress: Array<any>;
+  done: Array<any>;
   db: any;
   createString: string;
   open: boolean;

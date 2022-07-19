@@ -5,7 +5,6 @@ import Modal from "react-modal";
 import Task from "taskarian";
 import Store from "../../store";
 import "./create-card.styles.css";
-import { getCards } from "../../utils/kanban.utils";
 
 interface Props {
   store: Store;
@@ -56,7 +55,8 @@ const handleSubmit =
       Task.fromPromise(() => store.db.addCard(card)).fork(
         (err) => console.log(err),
         (success) => {
-          store.addCard(card);
+          const newCard = Object.assign({ id: success }, card);
+          store.addCard(newCard);
         }
       );
     } else {
@@ -111,47 +111,3 @@ class CreateCard extends React.Component<Props> {
 }
 
 export default observer(CreateCard);
-
-// const CreateCard = ({ updateCards }) => {
-//     const [modalIsOpen, setIsOpen] = useState(false);
-//     const [create, setCreateField] = useState("");
-//     const [status, setStatus] = useState("");
-
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         if (status) {
-//             let card = { name: create, description: create, status: status };
-//             connectToKanbanDB().then((db, dbInstanceId) => {
-//                 db.addCard(card).then((cardId) => console.log(`successfully added card ${cardId}`));
-//             });
-//             setCreateField("");
-//             setStatus("");
-//             updateCards();
-//             closeModal();
-//         }
-//     };
-
-//     return (
-// <div className="create-card">
-//     <Modal isOpen={modalIsOpen} onAfterOpen={afterOpenModal} onRequestClose={closeModal} style={customStyles} contentLabel="Create Card Modal">
-//         <form onSubmit={handleSubmit} className="modal-form">
-//             <select onChange={statusHandler} value={status}>
-//                 <option value="" disabled>
-//                     SELECT STATUS
-//                 </option>
-//                 <option value="TODO">To-do</option>
-//                 <option value="IN_PROGRESS">In Progress</option>
-//                 <option value="DONE">Done</option>
-//             </select>
-//             <button>CREATE CARD</button>
-//         </form>
-//     </Modal>
-//     <form onSubmit={openModal} className="create-card-form">
-//         <input onChange={onStringChange("create")} value={create} placeholder="e.g. Bug: TextPoll not dispatching half stars" maxLength={500} />
-//         <button>ADD NEW</button>
-//     </form>
-// </div>
-//     );
-// };
-
-// export default CreateCard;

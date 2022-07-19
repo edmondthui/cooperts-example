@@ -1,28 +1,59 @@
+import { observer } from "mobx-react";
 import React, { useState, Fragment } from "react";
-// import { Draggable } from "react-beautiful-dnd";
-// import "./card.styles.css";
-// import Modal from "react-modal";
-// import { connectToKanbanDB } from "../../utils/kanban.utils";
+import { Draggable } from "react-beautiful-dnd";
+import "./card.styles.css";
+import Modal from "react-modal";
+import Store from "../../store";
 
-// Modal.setAppElement("#root");
+Modal.setAppElement("#root");
 
-// const customStyles = {
-//   content: {
-//     top: "50%",
-//     left: "50%",
-//     right: "auto",
-//     bottom: "auto",
-//     marginRight: "-50%",
-//     transform: "translate(-50%, -50%)",
-//     width: "50%",
-//     height: "50%",
-//     boxShadow: "0px 2px 5px 5px rgba(0, 0, 0, 0.1)",
-//     display: "flex",
-//     flexDirection: "column",
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-// };
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "50%",
+    height: "50%",
+    boxShadow: "0px 2px 5px 5px rgba(0, 0, 0, 0.1)",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+};
+
+interface Props {
+  card: any;
+  index: number;
+}
+
+const getCardStyle = (isDragging: any, draggableStyle: any) => {
+  if (isDragging && draggableStyle.transform !== null)
+    draggableStyle.transform += " rotate(10deg)";
+  return { ...draggableStyle };
+};
+
+const Card: React.FC<Props> = ({ card, index }) => (
+  <Draggable draggableId={card.id} index={index}>
+    {(provided, snapshot) => (
+      <div
+        className="card"
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        ref={provided.innerRef}
+        id={card.id}
+        style={getCardStyle(snapshot.isDragging, provided.draggableProps.style)}
+      >
+        {card.description}
+      </div>
+    )}
+  </Draggable>
+);
+
+export default observer(Card);
 
 // const Card = ({ card, index, updateCards }) => {
 //   const [modalIsOpen, setIsOpen] = useState(false);
@@ -34,12 +65,6 @@ import React, { useState, Fragment } from "react";
 //     if (isDragging && draggableStyle.transform !== null)
 //       draggableStyle.transform += " rotate(10deg)";
 //     return { ...draggableStyle };
-//   };
-
-//   const openModal = (e) => {
-//     setIsOpen(true);
-//     console.log(e.currentTarget.id);
-//     setCardId(e.currentTarget.id);
 //   };
 
 //   const afterOpenModal = () => {};

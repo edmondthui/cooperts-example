@@ -26,10 +26,10 @@ class Reactions extends ReactionComponent<Store, State, Props> {
       case "loading":
         Task.succeed<any, {}>({})
           .assign("db", connectToKanbanDB)
-          .do(({ db }) => store.ready({ db: db }))
+          .do(store.ready)
           .andThen(getCards)
           .andThen(decodeCards)
-          .do((cards) => store.setCards(cards))
+          .do(store.setCards)
           .fork(
             (err) => console.log(err),
             (success) => console.log(success)

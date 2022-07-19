@@ -113,6 +113,52 @@ class Store {
         }
         this.state.open = false;
         this.state.createString = "";
+        this.state.status = "";
+        break;
+      case "error":
+      case "waiting":
+      case "loading":
+        break;
+      default:
+        assertNever(this.state);
+    }
+  };
+
+  @action
+  setTodo = (cards: Array<any>) => {
+    switch (this.state.kind) {
+      case "ready":
+        this.state.todo = cards;
+        break;
+      case "error":
+      case "waiting":
+      case "loading":
+        break;
+      default:
+        assertNever(this.state);
+    }
+  };
+
+  @action
+  setInProgress = (cards: Array<any>) => {
+    switch (this.state.kind) {
+      case "ready":
+        this.state.inProgress = cards;
+        break;
+      case "error":
+      case "waiting":
+      case "loading":
+        break;
+      default:
+        assertNever(this.state);
+    }
+  };
+
+  @action
+  setDone = (cards: Array<any>) => {
+    switch (this.state.kind) {
+      case "ready":
+        this.state.done = cards;
         break;
       case "error":
       case "waiting":

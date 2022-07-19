@@ -22,6 +22,8 @@ const customStyles = {
     width: "50%",
     height: "25%",
     boxShadow: "0px 2px 5px 5px rgba(0, 0, 0, 0.1)",
+    display: "flex",
+    justifyContent: "center",
   },
 };
 

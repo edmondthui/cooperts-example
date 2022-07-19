@@ -14,19 +14,6 @@ interface Props {
   createString: Maybe<string>;
 }
 
-// const onDragEnd = (result: any) => {
-//   const { destination, source } = result;
-//   if (!destination) {
-//     return;
-//   }
-//   if (
-//     destination.droppableId === source.droppableId &&
-//     destination.index === source.index
-//   ) {
-//     return;
-//   }
-// };
-
 const getCards = (column: string, store: Store): Array<any> => {
   switch (column) {
     case "TODO":

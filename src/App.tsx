@@ -11,8 +11,6 @@ class App extends React.Component<Props> {
   store = new Store();
 
   render() {
-    console.log(this.store.state.kind);
-    console.log(this.store);
     return (
       <>
         <CardColumns

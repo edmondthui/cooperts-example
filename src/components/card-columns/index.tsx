@@ -55,7 +55,6 @@ const onDragEnd = (store: Store) => (result: any) => {
   if (destination.droppableId === source.droppableId) {
     // // Database does not keep track of index so it just updates this on the front end
     const card = cards.splice(source.index, 1);
-    console.log(card);
     cards.splice(destination.index, 0, ...card);
     setCards(column, cards, store);
   }

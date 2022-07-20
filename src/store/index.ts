@@ -33,7 +33,6 @@ class Store {
       case "waiting":
         break;
       case "loading":
-        console.log(data);
         this.state.db = data.db;
         this.state = ready(this.state);
         break;
@@ -68,8 +67,6 @@ class Store {
   toggleModal = (isOpen: boolean) => {
     switch (this.state.kind) {
       case "ready":
-        console.log("toggle");
-        console.log(isOpen);
         this.state.open = isOpen;
         break;
       case "error":
@@ -269,7 +266,6 @@ class Store {
   get todo(): Array<Card> {
     switch (this.state.kind) {
       case "ready":
-        console.log(this.state.todo);
         return this.state.todo;
       case "error":
       case "loading":

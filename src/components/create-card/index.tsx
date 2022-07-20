@@ -69,12 +69,9 @@ const handleSubmit =
               store.addCard(newCard);
             }
           );
-          // const newCard = Object.assign({ id: success }, card);
-          // store.addCard(newCard);
         }
       );
     } else {
-      console.log("status required!");
       // store.error({ message: "Card status required!" });
     }
   };

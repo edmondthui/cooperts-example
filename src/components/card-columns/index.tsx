@@ -7,7 +7,6 @@ import CreateCard from "../create-card";
 import { DragDropContext } from "react-beautiful-dnd";
 import Store from "../../store";
 import Task from "taskarian";
-import Delete from "../delete";
 
 interface Props {
   store: Store;
@@ -85,18 +84,21 @@ const CardColumns: React.FC<Props> = ({ store, createString }) => {
         <DragDropContext onDragEnd={onDragEnd(store)}>
           <div className="column-container">
             <h1 className="column-title">To-do</h1>
-            <CardColumn cards={store.todo} status="TODO" />
+            <CardColumn cards={store.todo} status="TODO" store={store} />
           </div>
           <div className="column-container">
             <h1 className="column-title">In Progress</h1>
-            <CardColumn cards={store.inProgress} status="IN_PROGRESS" />
+            <CardColumn
+              cards={store.inProgress}
+              status="IN_PROGRESS"
+              store={store}
+            />
           </div>
           <div className="column-container">
             <h1 className="column-title">Done</h1>
-            <CardColumn cards={store.done} status="DONE" />
+            <CardColumn cards={store.done} status="DONE" store={store} />
           </div>
           <CreateCard store={store} createString={createString} />
-          <Delete />
         </DragDropContext>
       </div>
     </div>

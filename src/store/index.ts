@@ -173,13 +173,36 @@ class Store {
   setCards = (cards: Array<Card>) => {
     switch (this.state.kind) {
       case "ready":
-        this.state.todo = cards.filter((card: any) => card.status === "TODO");
+        this.state.todo = cards.filter((card: Card) => card.status === "TODO");
         this.state.inProgress = cards.filter(
-          (card: any) => card.status === "IN_PROGRESS"
+          (card: Card) => card.status === "IN_PROGRESS"
         );
-        this.state.done = cards.filter((card: any) => card.status === "DONE");
+        this.state.done = cards.filter((card: Card) => card.status === "DONE");
         this.state.open = false;
         this.state.createString = "";
+        break;
+      case "error":
+      case "waiting":
+      case "loading":
+        break;
+      default:
+        assertNever(this.state);
+    }
+  };
+
+  @action
+  delete = (cardId: string) => {
+    switch (this.state.kind) {
+      case "ready":
+        this.state.todo = this.state.todo.filter(
+          (card: Card) => card.id !== cardId
+        );
+        this.state.inProgress = this.state.inProgress.filter(
+          (card: Card) => card.id !== cardId
+        );
+        this.state.done = this.state.done.filter(
+          (card: Card) => card.id !== cardId
+        );
         break;
       case "error":
       case "waiting":

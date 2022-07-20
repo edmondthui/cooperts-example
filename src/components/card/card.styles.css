@@ -7,21 +7,8 @@
     border-radius: 5px;
     padding: 10px;
     word-break: break-all;
-    overflow: hidden
-}
-
-.delete-card {
-    background-color: red;
-    width: 90%;
-    height: 50px;
-    margin: 10px;
-}
-
-.update-card {
-    background-color: #00B882;
-    width: 90%;
-    height: 50px;
-    margin: auto 10px 10px 10px;
+    overflow: hidden;
+    position: relative;
 }
 
 .modal-form input{
@@ -34,4 +21,13 @@
     border: none;
     padding: 0 20px;
     font-size: 18px;
+}
+
+.delete {
+    font-size: 1em;
+    position: absolute;
+    background-color: transparent;
+    color: black;
+    top: .5em;
+    right: .5em;
 }

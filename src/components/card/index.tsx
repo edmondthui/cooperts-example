@@ -1,11 +1,14 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
+import Task from "taskarian";
+import Store from "../../store";
 import "./card.styles.css";
 
 interface Props {
   card: any;
   index: number;
+  store: Store;
 }
 
 const getCardStyle = (isDragging: any, draggableStyle: any) => {
@@ -14,20 +17,18 @@ const getCardStyle = (isDragging: any, draggableStyle: any) => {
   return { ...draggableStyle };
 };
 
-// const handleDelete = () => {
-//   connectToKanbanDB().then((db, dbInstanceId) => {
-//     db.deleteCardById(cardId).then((bool) =>
-//       console.log(`successfully deleted card ${bool}`)
-//     );
+const handleDelete =
+  (store: Store, cardId: string) =>
+  (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    store.delete(cardId);
+    Task.fromPromise(() => store.db.deleteCardById(cardId)).fork(
+      (err) => console.log(err),
+      (success) => console.log(success)
+    );
+  };
 
-//     setCardId("");
-//     updateCards();
-//     closeModal();
-//   });
-// };
-// will probably make a new droppable garbage can component that will handle delete
-
-const Card: React.FC<Props> = ({ card, index }) => (
+const Card: React.FC<Props> = ({ card, index, store }) => (
   <Draggable draggableId={card.id} index={index}>
     {(provided, snapshot) => (
       <div
@@ -39,6 +40,9 @@ const Card: React.FC<Props> = ({ card, index }) => (
         style={getCardStyle(snapshot.isDragging, provided.draggableProps.style)}
       >
         {card.description}
+        <button onClick={handleDelete(store, card.id)} className="delete">
+          &#10005;
+        </button>
       </div>
     )}
   </Draggable>

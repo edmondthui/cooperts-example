@@ -5,6 +5,8 @@ import Modal from "react-modal";
 import Task from "taskarian";
 import Store from "../../store";
 import "./create-card.styles.css";
+import { decodeId } from "../../store/Decoders";
+import { CardType } from "../../store/Types";
 
 interface Props {
   store: Store;
@@ -57,8 +59,18 @@ const handleSubmit =
       Task.fromPromise(() => store.db.addCard(card)).fork(
         (err) => console.log(err),
         (success) => {
-          const newCard = Object.assign({ id: success }, card);
-          store.addCard(newCard);
+          decodeId(success).fork(
+            () => {},
+            (succ) => {
+              const newCard = Object.assign(
+                { id: succ, created: Date.now(), lastUpdated: Date.now() },
+                card
+              );
+              store.addCard(newCard);
+            }
+          );
+          // const newCard = Object.assign({ id: success }, card);
+          // store.addCard(newCard);
         }
       );
     } else {
@@ -69,7 +81,7 @@ const handleSubmit =
 
 const statusHandler =
   (store: Store) => (e: React.ChangeEvent<HTMLSelectElement>) => {
-    store.setStatus(e.target.value);
+    store.setStatus(e.target.value as CardType);
   };
 
 class CreateCard extends React.Component<Props> {

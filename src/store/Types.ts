@@ -11,7 +11,7 @@ export interface Card {
 
 export type CardResource = Resource<Card>;
 
-export type CardType = "TODO" | "DONE" | "IN_PROGRESS";
+export type CardType = "TODO" | "DONE" | "IN_PROGRESS" | "";
 
 export const waiting = (): Waiting => ({
   kind: "waiting",
@@ -57,7 +57,7 @@ export interface Loading {
   done: Array<any>;
   db: any;
   open: boolean;
-  status: string;
+  status: CardType;
 }
 
 interface Ready {
@@ -68,7 +68,7 @@ interface Ready {
   db: any;
   createString: string;
   open: boolean;
-  status: string;
+  status: CardType;
 }
 
 interface Error {

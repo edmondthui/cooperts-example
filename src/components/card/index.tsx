@@ -2,7 +2,6 @@ import { observer } from "mobx-react";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import "./card.styles.css";
-import Store from "../../store";
 
 interface Props {
   card: any;
@@ -11,7 +10,7 @@ interface Props {
 
 const getCardStyle = (isDragging: any, draggableStyle: any) => {
   if (isDragging && draggableStyle.transform !== null)
-    draggableStyle.transform += " rotate(10deg)";
+    draggableStyle.transform += " rotate(3deg)";
   return { ...draggableStyle };
 };
 

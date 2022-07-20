@@ -33,3 +33,15 @@ export const cardResourceDecoder: Decoder<CardResource> =
   resourceDecoder(cardDecoder);
 
 export const cardArrayDecoder: Decoder<Card[]> = array(cardDecoder);
+
+export const decodeCards = (cards: unknown) =>
+  fromDecoderAny(cardArrayDecoder)(cards).mapError((e) => ({
+    err: `decoder error ${e}`,
+  }));
+
+export const idDecoder: Decoder<string> = string;
+
+export const decodeId = (id: unknown) =>
+  fromDecoderAny(idDecoder)(id).mapError((e) => ({
+    err: `decoder error ${e}`,
+  }));

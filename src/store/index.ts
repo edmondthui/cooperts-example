@@ -1,6 +1,6 @@
 import { action, computed, observable } from "mobx";
 import { just, Maybe, nothing } from "maybeasy";
-import { error, loading, ready, State, waiting } from "./Types";
+import { Card, CardType, error, loading, ready, State, waiting } from "./Types";
 
 export const assertNever = (x: never) => {
   throw new Error(`Unexpected object: ${x}`);
@@ -82,7 +82,7 @@ class Store {
   };
 
   @action
-  setStatus = (status: string) => {
+  setStatus = (status: CardType) => {
     switch (this.state.kind) {
       case "ready":
         this.state.status = status;
@@ -97,7 +97,7 @@ class Store {
   };
 
   @action
-  addCard = (card: any) => {
+  addCard = (card: Card) => {
     switch (this.state.kind) {
       case "ready":
         switch (card.status) {
@@ -125,7 +125,7 @@ class Store {
   };
 
   @action
-  setTodo = (cards: Array<any>) => {
+  setTodo = (cards: Array<Card>) => {
     switch (this.state.kind) {
       case "ready":
         this.state.todo = cards;
@@ -140,7 +140,7 @@ class Store {
   };
 
   @action
-  setInProgress = (cards: Array<any>) => {
+  setInProgress = (cards: Array<Card>) => {
     switch (this.state.kind) {
       case "ready":
         this.state.inProgress = cards;
@@ -155,7 +155,7 @@ class Store {
   };
 
   @action
-  setDone = (cards: Array<any>) => {
+  setDone = (cards: Array<Card>) => {
     switch (this.state.kind) {
       case "ready":
         this.state.done = cards;
@@ -170,7 +170,7 @@ class Store {
   };
 
   @action
-  setCards = (cards: any) => {
+  setCards = (cards: Array<Card>) => {
     switch (this.state.kind) {
       case "ready":
         this.state.todo = cards.filter((card: any) => card.status === "TODO");
@@ -204,7 +204,7 @@ class Store {
   }
 
   @computed
-  get status(): string {
+  get status(): CardType {
     switch (this.state.kind) {
       case "ready":
       case "loading":
@@ -243,7 +243,7 @@ class Store {
   }
 
   @computed
-  get todo(): Array<any> {
+  get todo(): Array<Card> {
     switch (this.state.kind) {
       case "ready":
         console.log(this.state.todo);
@@ -257,7 +257,7 @@ class Store {
   }
 
   @computed
-  get inProgress(): Array<any> {
+  get inProgress(): Array<Card> {
     switch (this.state.kind) {
       case "ready":
         return this.state.inProgress;
@@ -270,7 +270,7 @@ class Store {
   }
 
   @computed
-  get done(): Array<any> {
+  get done(): Array<Card> {
     switch (this.state.kind) {
       case "ready":
         return this.state.done;

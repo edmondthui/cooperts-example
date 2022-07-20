@@ -4,16 +4,11 @@ import { connectToKanbanDB, getCards } from "../utils/kanban.utils";
 import Store, { assertNever } from "./index";
 import ReactionComponent, { RCProps } from "./ReactionComponent";
 import { State } from "./Types";
-import { cardArrayDecoder, fromDecoderAny } from "./Decoders";
+import { decodeCards } from "./Decoders";
 
 interface Props extends RCProps<Store> {
   store: Store;
 }
-
-const decodeCards = (cards: any) =>
-  fromDecoderAny(cardArrayDecoder)(cards).mapError((e) => ({
-    err: `decoder error ${e}`,
-  }));
 
 class Reactions extends ReactionComponent<Store, State, Props> {
   tester = () => this.props.store.state;

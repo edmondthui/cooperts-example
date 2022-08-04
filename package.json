@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://edmondhui.com/cooperts-example",
   "dependencies": {
+    "@edmondhui/kanbandb": "file:kanbandb",
     "@execonline-inc/decoders": "^6.2.0",
     "@execonline-inc/logging": "^5.3.0",
     "@execonline-inc/resource": "^6.15.0",
@@ -18,7 +19,6 @@
     "cra-template": "1.0.3",
     "gh-pages": "^3.2.3",
     "jsonous": "^7.3.0",
-    "kanbandb": "github:netpoetica/KanbanDB#master",
     "mobx": "^4.15.7",
     "mobx-react": "^5.2.8",
     "mobx-utils": "^5.6.2",

@@ -8,6 +8,7 @@
     "@execonline-inc/logging": "^5.3.0",
     "@execonline-inc/resource": "^6.15.0",
     "@execonline-inc/url": "^5.7.0",
+    "@execonline-inc/maybe-adapter": "4.3.0",
     "@types/jest": "^28.1.5",
     "@types/node": "^18.0.4",
     "@types/react": "^18.0.15",
@@ -28,18 +29,21 @@
     "react-modal": "^3.14.4",
     "react-scripts": "3.4.3",
     "taskarian": "^4.1.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "@kofno/piper": "^4.3.0",
+    "maybeasy": "^3.0.0",
+    "uuid": "^8.3.2",
+    "@types/uuid": "^8.3.4",
+    "@execonline-inc/collections": "^10.2.0",
+    "resulty": "^5.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -56,5 +60,9 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.0"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }

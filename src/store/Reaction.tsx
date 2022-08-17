@@ -10,7 +10,6 @@ import { State } from './Types';
 interface Props extends RCProps<Store> {
   store: Store;
 }
-
 class Reactions extends ReactionComponent<Store, State, Props> {
   tester = () => this.props.store.state;
   effect = (state: State) => {
@@ -48,5 +47,4 @@ class Reactions extends ReactionComponent<Store, State, Props> {
     }
   };
 }
-
 export default observer(Reactions);

@@ -30,5 +30,4 @@ const CardColumn: React.FC<Props> = ({ cards, status, store }) => (
     )}
   </Droppable>
 );
-
 export default observer(CardColumn);

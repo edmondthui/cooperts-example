@@ -80,5 +80,4 @@ const CardColumns: React.FC<Props> = ({ store }) => {
     </div>
   );
 };
-
 export default observer(CardColumns);
